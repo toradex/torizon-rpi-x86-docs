@@ -4,7 +4,7 @@ Torizon is a software platform that simplifies the process of developing and mai
 
 ## Getting Started
 
-#### Torizon for Raspberry Pi
+### Torizon for Raspberry Pi
 
 Supported hardware:
 
@@ -14,7 +14,7 @@ Supported hardware:
 
 - Raspberry Pi 4B
 
-##### Flashing SD Card
+#### Flashing SD Card
 
 The easiest way to flash an SD Card to be ready with TorizonCore for Raspberry Pi is using the [Raspberry PI Imager](https://downloads.raspberrypi.org/imager/).
 
@@ -72,11 +72,13 @@ Use the follow credentials to login:
 
 > ⚠️ As a security measure TorizonCore uses the default password only for the first login, requiring a password change.
 
-#### Torizon for x86-64
+### Torizon for x86-64
 
-##### Flashing Storage
+#### Flashing Storage
 
-Download the `WIC` image compressed file:
+> ⚠️ These are the same instructions for create a live USB drive installation
+
+Download the compressed `WIC` image:
 
 - [Torizon for x86-64](https://share.toradex.com/4p1uu0zemkdwe7f)
 
@@ -108,7 +110,72 @@ Using [Balena Etcher](https://github.com/balena-io/etcher/releases):
 
 > ⚠️ Before flashing the storage selected, the Balena Etcher will ask for your confirmation and administrator password. Be sure to select the right media, this operation will erase previous data from the storage selected and there is no going back.
 
-##### First Boot
+#### Virtual Machine
+
+Download the compressed `VMDK` image:
+
+- [Torizon for x86-64 Virtual Machine Image](https://share.toradex.com/2d9bko5vc2m6gmp)
+
+##### Running Using QEMU
+
+> ⚠️ TorizonCore x86-64 needs UEFI to boot. Install the `ovmf` package to have the bios files.
+
+```bash
+qemu-system-x86_64 \
+    -smp 2 \
+    -device AC97 \
+    -device virtio-vga \
+    -enable-kvm \
+    -m 1024 \
+    -bios /usr/share/ovmf/OVMF.fd \
+    -hda "torizon-core-docker-intel-corei7-64.wic.vmdk" \
+    -net user \
+    -name "torizon"
+```
+
+##### Running on Virtual Box
+
+- Click on `New`;
+
+- Input the new VM name;
+
+- Select a folder to be created for store the new configuration VM files;
+
+- Select `Linux` on type combo box;
+
+- Select `Other Linux (64-bit)` on Version combo box;
+
+- Click `Next`;
+
+- Set `1024` for the memory size;
+
+- Click `Next`;
+
+- Select `Use a existing virtual file disk`;
+
+- Click in the folder icon;
+
+- Click on `Add`;
+
+- Choose the location for the `torizon-core-docker-intel-corei7-64.wic.vmdk` file and click on `Open`;
+
+- Click `Choose`;
+
+- Click `Create`;
+
+![](https://docs.toradex.com/111528-creatingnewvboxvm.gif)
+
+> ⚠️ TorizonCore x86-64 needs UEFI to boot. So, make sure to select the EFI option on the VM settings.
+
+- With the new VM created selected, click on `Settings`;
+
+- Select `System` and click for tick the `Enable EFI (special OSes only)` option;
+
+- **Optional:** Select `Display` and click for tick the `Enable 3D Acceleration`;
+
+![](https://docs.toradex.com/111529-vboxfinalconfiguration.gif)
+
+#### First Boot
 
 The board terminal can be accessed by the following methods:
 
