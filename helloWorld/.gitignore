@@ -1,0 +1,9 @@
+debug
+release
+.qmake.stash
+qmake_resources.qrc
+Makefile
+x86_64
+amd64
+aarch64
+armhf
