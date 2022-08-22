@@ -210,4 +210,4 @@ In the device the application will be deployed and you will be able to see a Qt 
 
 Device receiving the update:
 
-https://docs1.toradex.com/111544-20220822_014143.mp4
+<video src='https://docs.toradex.com/111544-20220822_014143.mp4' width=180/>
