@@ -74,6 +74,20 @@ Use the follow credentials to login:
 
 ### Torizon for x86-64
 
+Supported hardware:
+
+- Intel Nehalem and later Core CPUs;
+
+- Intel Silvermont and later Atom CPUs;
+
+- AMD Zen, Zen+, Zen 2, Zen 3;
+
+Supported virtual hardware:
+
+- QEMU (needs `ovmf` packages)
+
+- Virtual Box;
+
 #### Flashing Storage
 
 > ⚠️ These are the same instructions for create a live USB drive installation
@@ -195,6 +209,8 @@ Use the follow credentials to login:
 
 > ⚠️ As a security measure TorizonCore uses the default password only for the first login, requiring a password change.
 
-### Hello World Application
+# Next Steps - Hello World Qt 6 Application
 
-## Building Torizon for Raspberry Pi and x86-64 using Yocto
+To familiarize yourself with the Torizon ecosystem, follow the instructions to run your first Qt 6 application in a Raspberry Pi or x86-64 Torizon Core device:
+
+[Hello World Qt 6 Application](HELLO-WORLD-APP.md)
