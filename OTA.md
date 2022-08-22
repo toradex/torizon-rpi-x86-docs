@@ -208,4 +208,4 @@ If everything goes as expected during the update a successful update notificatio
 
 In the device the application will be deployed and you will be able to see a Qt 6 application running in the provisioned device, which consists of a white background with the Torizon logo showing in a zoom in/fade in animation (the updated animations that are uncommented from the QML file).
 
-![](https://docs.toradex.com/111543-updtedapplicationrunning.gif)
+![](https://user-images.githubusercontent.com/2633321/185845251-e1fb19ab-f2f8-4971-ba11-2998b282c25e.gif)
