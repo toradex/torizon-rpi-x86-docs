@@ -9,24 +9,24 @@ Window {
     height: 320
     title: qsTr("Title")
 
-    OpacityAnimator
-    {
-        id: animator
-        target: mainWindow.contentItem
-        from: 0
-        to: 1
-        duration: 1000
-        running: true
-    }
+    // OpacityAnimator
+    // {
+    //     id: animator
+    //     target: mainWindow.contentItem
+    //     from: 0
+    //     to: 1
+    //     duration: 1000
+    //     running: true
+    // }
 
-    ScaleAnimator {
-        target: mainWindow.contentItem
-        from: 0
-        to: 1
-        duration: 5000
-        running: true
-        easing.type: "Bezier"
-    }
+    // ScaleAnimator {
+    //     target: mainWindow.contentItem
+    //     from: 0
+    //     to: 1
+    //     duration: 5000
+    //     running: true
+    //     easing.type: "Bezier"
+    // }
 
     Scene {
         id: main
