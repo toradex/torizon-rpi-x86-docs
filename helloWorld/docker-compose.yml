@@ -1,10 +1,10 @@
 version: "3.9"
 services:
-  cppqml-debug:
+  torizon-hello-world-debug:
     build:
       context: .
       dockerfile: Dockerfile.debug
-    image: ${LOCAL_REGISTRY}:5000/cppqml-debug:${TAG}
+    image: ${LOCAL_REGISTRY}:5000/torizon-hello-world-debug:${TAG}
     ports:
       # SSH debug
       - 2231:2231
@@ -33,11 +33,11 @@ services:
       weston
     ]
 
-  cppqml:
+  torizon-hello-world:
     build:
       context: .
       dockerfile: Dockerfile
-    image: ${DOCKER_LOGIN}/cppqml:${TAG}
+    image: ${DOCKER_LOGIN}/torizon-hello-world:${TAG}
     volumes:
       - type: bind
         source: /tmp
@@ -63,7 +63,9 @@ services:
     image: torizonextras/weston${GPU}:2
     environment:
       - ACCEPT_FSL_EULA=1
-      - WESTON_ARGS=
+      - WESTON_ARGS=--continue-without-input
+      # if you want run without GPU support
+      #- WESTON_ARGS=--use-pixman -B fbdev-backend.so
     # Required to get udev events from host udevd via netlink
     network_mode: host
     volumes:

@@ -4,8 +4,7 @@
             "name": "Linux",
             "includePath": [
                 "${workspaceFolder}/**",
-                "/usr/include/**",
-                "/home/castello/Qt/6.2.4/gcc_64/include/**"
+                "/usr/include/**"
             ],
             "defines": [],
             "compilerPath": "/usr/bin/gcc",

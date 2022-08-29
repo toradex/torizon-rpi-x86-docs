@@ -8,7 +8,7 @@
             "type": "process",
             "isBackground": true,
             "args": [
-                "${workspaceFolder}/cppQML.pro"
+                "${workspaceFolder}/helloWorld.pro"
             ],
             "problemMatcher": [
                 "$gcc"
@@ -16,7 +16,11 @@
             "icon": {
                 "id": "tools",
                 "color": "terminal.ansiGreen"
-            }
+            },
+            "dependsOrder": "sequence",
+            "dependsOn": [
+                "build-debug-x86-local"
+            ]
         },
         {
             "label": "Open in QT Creator",
@@ -42,7 +46,11 @@
             "icon": {
                 "id": "tools",
                 "color": "terminal.ansiGreen"
-            }
+            },
+            "dependsOrder": "sequence",
+            "dependsOn": [
+                "build-debug-x86-local"
+            ]
         },
         {
             "label": "kill-redirect-qml-debugger",
@@ -51,7 +59,9 @@
             "type": "shell",
             "isBackground": true,
             "args": [
-                "nc.traditional"
+                "nc.traditional",
+                "||",
+                "true"
             ],
             "icon": {
                 "id": "tools",
@@ -66,32 +76,36 @@
             "isBackground": true,
             "args": [
                 "-vv",
-                "-l", 
-                "-p", 
+                "-l",
+                "-p",
                 "2233",
                 "-c",
-                "\"nc.traditional ${config:torizon_ip} 2233\"",
+            "\"nc.traditional ${config:torizon_ip} 2233\""
             ],
-            "problemMatcher": [{
-                "pattern": [{
-                    "regexp": ".",
-                    "file": 1,
-                    "location": 2,
-                    "message": 3
-                }],
-                "background": {
-                    "activeOnStart": true,
-                    "beginsPattern": ".",
-                    "endsPattern": ".",
+            "problemMatcher": [
+                {
+                    "pattern": [
+                        {
+                            "regexp": ".",
+                            "file": 1,
+                            "location": 2,
+                            "message": 3
+                        }
+                    ],
+                    "background": {
+                        "activeOnStart": true,
+                        "beginsPattern": ".",
+                        "endsPattern": "."
+                    }
                 }
-            }],
+            ],
             "icon": {
                 "id": "tools",
                 "color": "terminal.ansiGreen"
             }
         },
         {
-            "label": "Start GDB Server Remote",
+            "label": "Start GDB Server Remote arm64",
             "command": "ssh",
             "type": "process",
             "args": [
@@ -104,10 +118,11 @@
                 "-o",
                 "StrictHostKeyChecking=no",
                 "torizon@${config:torizon_ip}",
-                "cd ~/app && export QT_LOGGING_RULES=\"*.debug=true; qt.*.debug=false\" && gdbserver localhost:${config:torizon_debug_port2} cppQML -qmljsdebugger=port:${config:torizon_debug_port3},block,services:DebugMessages,QmlDebugger,V8Debugger,QmlInspector,DebugTranslation"
+                "cd ~/app && export QT_LOGGING_RULES=\"*.debug=true; qt.*.debug=false\" && gdbserver localhost:${config:torizon_debug_port2} helloWorld -qmljsdebugger=port:${config:torizon_debug_port3},block,services:DebugMessages,QmlDebugger,V8Debugger,QmlInspector,DebugTranslation"
             ],
             "dependsOrder": "sequence",
             "dependsOn": [
+                "kill-redirect-qml-debugger",
                 "deploy-torizon-arm64",
                 "redirect-qml-debugger"
             ],
@@ -122,9 +137,15 @@
             "command": "gdbserver",
             "type": "process",
             "isBackground": false,
+            "options": {
+                "env": {
+                    "QT_LOGGING_RULES": "*.debug=true; qt.*.debug=false"
+                }
+            },
             "args": [
-                "localhost:${config:torizon_debug_ssh_port}",
-                "${workspaceFolder}/x86_64/debug/cppQML"
+                "localhost:${config:torizon_debug_port2}",
+                "${workspaceFolder}/x86_64/debug/helloWorld",
+                "-qmljsdebugger=port:${config:torizon_debug_port3},block,services:DebugMessages,QmlDebugger,V8Debugger,QmlInspector,DebugTranslation"
             ],
             "problemMatcher": [
                 "$gcc"
@@ -132,6 +153,62 @@
             "icon": {
                 "id": "tools",
                 "color": "terminal.ansiGreen"
+            }
+        },
+        {
+            "label": "Start GDB Server Remote arm32",
+            "command": "ssh",
+            "type": "process",
+            "args": [
+                "-i",
+                "${workspaceFolder}/.conf/id_rsa",
+                "-p",
+                "${config:torizon_debug_ssh_port}",
+                "-o",
+                "UserKnownHostsFile=/dev/null",
+                "-o",
+                "StrictHostKeyChecking=no",
+                "torizon@${config:torizon_ip}",
+                "cd ~/app && export QT_LOGGING_RULES=\"*.debug=true; qt.*.debug=false\" && gdbserver localhost:${config:torizon_debug_port2} helloWorld -qmljsdebugger=port:${config:torizon_debug_port3},block,services:DebugMessages,QmlDebugger,V8Debugger,QmlInspector,DebugTranslation"
+            ],
+            "dependsOrder": "sequence",
+            "dependsOn": [
+                "kill-redirect-qml-debugger",
+                "deploy-torizon-arm",
+                "redirect-qml-debugger"
+            ],
+            "problemMatcher": "$msCompile",
+            "icon": {
+                "id": "layers",
+                "color": "terminal.ansiCyan"
+            }
+        },
+        {
+            "label": "Start GDB Server Remote x86",
+            "command": "ssh",
+            "type": "process",
+            "args": [
+                "-i",
+                "${workspaceFolder}/.conf/id_rsa",
+                "-p",
+                "${config:torizon_debug_ssh_port}",
+                "-o",
+                "UserKnownHostsFile=/dev/null",
+                "-o",
+                "StrictHostKeyChecking=no",
+                "torizon@${config:torizon_ip}",
+                "cd ~/app && export QT_LOGGING_RULES=\"*.debug=true; qt.*.debug=false\" && gdbserver localhost:${config:torizon_debug_port2} helloWorld -qmljsdebugger=port:${config:torizon_debug_port3},block,services:DebugMessages,QmlDebugger,V8Debugger,QmlInspector,DebugTranslation"
+            ],
+            "dependsOrder": "sequence",
+            "dependsOn": [
+                "kill-redirect-qml-debugger",
+                "deploy-torizon-x86",
+                "redirect-qml-debugger"
+            ],
+            "problemMatcher": "$msCompile",
+            "icon": {
+                "id": "layers",
+                "color": "terminal.ansiCyan"
             }
         },
         {
@@ -160,6 +237,24 @@
             "args": [
                 "-r",
                 "QML",
+                "${workspaceFolder}/armhf/debug"
+            ],
+            "problemMatcher": [
+                "$gcc"
+            ],
+            "icon": {
+                "id": "flame",
+                "color": "terminal.ansiYellow"
+            }
+        },
+        {
+            "label": "copy-assets-x86-local",
+            "detail": "hide",
+            "command": "cp",
+            "type": "shell",
+            "args": [
+                "-r",
+                "QML",
                 "${workspaceFolder}/x86_64/debug"
             ],
             "problemMatcher": [
@@ -178,7 +273,7 @@
             "args": [
                 "-r",
                 "QML",
-                "${workspaceFolder}/x86_64/debug"
+                "${workspaceFolder}/amd64/debug"
             ],
             "problemMatcher": [
                 "$gcc"
@@ -189,7 +284,7 @@
             }
         },
         {
-            "label": "run-qmake-debug-x86",
+            "label": "run-qmake-debug-x86-local",
             "command": "qmake",
             "type": "shell",
             "args": [
@@ -207,14 +302,13 @@
             }
         },
         {
-            "label": "build-debug-x86",
+            "label": "build-debug-x86-local",
             "command": "make",
             "type": "shell",
             "options": {
                 "cwd": "${workspaceFolder}/x86_64"
             },
-            "args": [
-            ],
+        "args": [],
             "problemMatcher": [
                 "$gcc"
             ],
@@ -224,8 +318,8 @@
             },
             "dependsOrder": "sequence",
             "dependsOn": [
-                "run-qmake-x86",
-                "copy-assets-x86"
+                "run-qmake-debug-x86-local",
+                "copy-assets-x86-local"
             ]
         },
         {
@@ -256,7 +350,7 @@
                 "-it",
                 "-v",
                 "${workspaceFolder}:/app",
-                "cross-toolchain-arm64-cppqml",
+                "cross-toolchain-arm64-torizon-hello-world",
                 "bash",
                 "-c",
                 "\"qmake6 -o aarch64/Makefile CONFIG+=debug CONFIG+=qml_debug\""
@@ -283,7 +377,7 @@
                 "${workspaceFolder}/Dockerfile.sdk",
                 "${workspaceFolder}",
                 "-t",
-                "cross-toolchain-arm64-cppqml",
+                "cross-toolchain-arm64-torizon-hello-world",
                 "--build-arg",
                 "IMAGE_ARCH=arm64"
             ],
@@ -305,7 +399,7 @@
                 "-it",
                 "-v",
                 "${workspaceFolder}:/app",
-                "cross-toolchain-arm64-cppqml",
+                "cross-toolchain-arm64-torizon-hello-world",
                 "bash",
                 "-c",
                 "\"cd aarch64 && make -j12\""
@@ -321,7 +415,6 @@
             "dependsOn": [
                 "run-qmake-debug-arm64",
                 "copy-assets-arm64"
-                
             ]
         },
         {
@@ -334,7 +427,7 @@
                 "-it",
                 "-v",
                 "${workspaceFolder}:/app",
-                "cross-toolchain-arm64-cppqml",
+                "cross-toolchain-arm64-torizon-hello-world",
                 "bash",
                 "-c",
                 "\"cd aarch64 && make clean\""
@@ -389,7 +482,7 @@
                 "build",
                 "--build-arg",
                 "IMAGE_ARCH=arm64",
-                "cppqml-debug"
+                "torizon-hello-world-debug"
             ],
             "dependsOrder": "sequence",
             "problemMatcher": "$msCompile",
@@ -411,7 +504,7 @@
             },
             "args": [
                 "push",
-                "cppqml-debug"
+                "torizon-hello-world-debug"
             ],
             "dependsOrder": "sequence",
             "problemMatcher": "$msCompile",
@@ -434,7 +527,7 @@
                 "-o",
                 "StrictHostKeyChecking=no",
                 "torizon@${config:torizon_ip}",
-                "LOCAL_REGISTRY=${config:host_ip} TAG=arm64 docker-compose pull cppqml-debug"
+                "LOCAL_REGISTRY=${config:host_ip} TAG=arm64 docker-compose pull torizon-hello-world-debug"
             ],
             "dependsOrder": "sequence",
             "problemMatcher": "$msCompile",
@@ -457,7 +550,7 @@
                 "-o",
                 "StrictHostKeyChecking=no",
                 "torizon@${config:torizon_ip}",
-                "LOCAL_REGISTRY=${config:host_ip} TAG=arm64 docker-compose up -d cppqml-debug"
+                "LOCAL_REGISTRY=${config:host_ip} TAG=arm64 docker-compose up -d torizon-hello-world-debug"
             ],
             "dependsOrder": "sequence",
             "problemMatcher": "$msCompile",
@@ -485,6 +578,7 @@
                 "torizon@${config:torizon_ip}:~/app"
             ],
             "dependsOn": [
+                "validate-settings",
                 "copy-docker-compose",
                 "pre-cleanup-arm64",
                 "build-makedir",
@@ -503,7 +597,263 @@
                 "color": "terminal.ansiYellow"
             }
         },
-        // x86
+        {
+            "label": "run-qmake-debug-arm",
+            "command": "docker",
+            "type": "shell",
+            "args": [
+                "run",
+                "--rm",
+                "-it",
+                "-v",
+                "${workspaceFolder}:/app",
+                "cross-toolchain-arm-torizon-hello-world",
+                "bash",
+                "-c",
+                "\"qmake6 -o armhf/Makefile CONFIG+=debug CONFIG+=qml_debug\""
+            ],
+            "problemMatcher": [
+                "$gcc"
+            ],
+            "icon": {
+                "id": "flame",
+                "color": "terminal.ansiYellow"
+            },
+            "dependsOrder": "sequence",
+            "dependsOn": [
+                "build-container-image-sdk-arm"
+            ]
+        },
+        {
+            "label": "build-container-image-sdk-arm",
+            "command": "docker",
+            "type": "shell",
+            "args": [
+                "build",
+                "-f",
+                "${workspaceFolder}/Dockerfile.sdk",
+                "${workspaceFolder}",
+                "-t",
+                "cross-toolchain-arm-torizon-hello-world",
+                "--build-arg",
+                "IMAGE_ARCH=arm"
+            ],
+            "problemMatcher": [
+                "$gcc"
+            ],
+            "icon": {
+                "id": "flame",
+                "color": "terminal.ansiYellow"
+            }
+        },
+        {
+            "label": "build-debug-arm",
+            "command": "docker",
+            "type": "shell",
+            "args": [
+                "run",
+                "--rm",
+                "-it",
+                "-v",
+                "${workspaceFolder}:/app",
+                "cross-toolchain-arm-torizon-hello-world",
+                "bash",
+                "-c",
+                "\"cd armhf && make -j12\""
+            ],
+            "problemMatcher": [
+                "$gcc"
+            ],
+            "icon": {
+                "id": "flame",
+                "color": "terminal.ansiYellow"
+            },
+            "dependsOrder": "sequence",
+            "dependsOn": [
+                "run-qmake-debug-arm",
+                "copy-assets-arm"
+            ]
+        },
+        {
+            "label": "clean-arm",
+            "command": "docker",
+            "type": "shell",
+            "args": [
+                "run",
+                "--rm",
+                "-it",
+                "-v",
+                "${workspaceFolder}:/app",
+                "cross-toolchain-arm-torizon-hello-world",
+                "bash",
+                "-c",
+                "\"cd armhf && make clean\""
+            ],
+            "problemMatcher": [
+                "$gcc"
+            ],
+            "icon": {
+                "id": "flame",
+                "color": "terminal.ansiYellow"
+            },
+            "dependsOrder": "sequence",
+            "dependsOn": [
+                "build-container-image-sdk-arm"
+            ]
+        },
+        {
+            "label": "pre-cleanup-arm",
+            "detail": "hide",
+            "command": "sshpass",
+            "type": "process",
+            "args": [
+                "-p",
+                "${config:torizon_psswd}",
+                "ssh",
+                "-o",
+                "UserKnownHostsFile=/dev/null",
+                "-o",
+                "StrictHostKeyChecking=no",
+                "torizon@${config:torizon_ip}",
+                "LOCAL_REGISTRY=${config:host_ip} TAG=arm docker-compose down --remove-orphans"
+            ],
+            "dependsOrder": "sequence",
+            "problemMatcher": "$msCompile",
+            "icon": {
+                "id": "flame",
+                "color": "terminal.ansiYellow"
+            }
+        },
+        {
+            "label": "build-container-torizon-debug-arm",
+            "detail": "hide",
+            "command": "docker-compose",
+            "type": "process",
+            "options": {
+                "env": {
+                    "LOCAL_REGISTRY": "localhost",
+                    "TAG": "arm"
+                }
+            },
+            "args": [
+                "build",
+                "--build-arg",
+                "IMAGE_ARCH=arm",
+                "torizon-hello-world-debug"
+            ],
+            "dependsOrder": "sequence",
+            "problemMatcher": "$msCompile",
+            "icon": {
+                "id": "flame",
+                "color": "terminal.ansiYellow"
+            }
+        },
+        {
+            "label": "push-container-torizon-debug-arm",
+            "detail": "hide",
+            "command": "docker-compose",
+            "type": "process",
+            "options": {
+                "env": {
+                    "LOCAL_REGISTRY": "localhost",
+                    "TAG": "arm"
+                }
+            },
+            "args": [
+                "push",
+                "torizon-hello-world-debug"
+            ],
+            "dependsOrder": "sequence",
+            "problemMatcher": "$msCompile",
+            "icon": {
+                "id": "flame",
+                "color": "terminal.ansiYellow"
+            }
+        },
+        {
+            "label": "pull-container-torizon-debug-arm",
+            "detail": "hide",
+            "command": "sshpass",
+            "type": "process",
+            "args": [
+                "-p",
+                "${config:torizon_psswd}",
+                "ssh",
+                "-o",
+                "UserKnownHostsFile=/dev/null",
+                "-o",
+                "StrictHostKeyChecking=no",
+                "torizon@${config:torizon_ip}",
+                "LOCAL_REGISTRY=${config:host_ip} TAG=arm docker-compose pull torizon-hello-world-debug"
+            ],
+            "dependsOrder": "sequence",
+            "problemMatcher": "$msCompile",
+            "icon": {
+                "id": "flame",
+                "color": "terminal.ansiYellow"
+            }
+        },
+        {
+            "label": "run-container-torizon-debug-arm",
+            "detail": "hide",
+            "command": "sshpass",
+            "type": "process",
+            "args": [
+                "-p",
+                "${config:torizon_psswd}",
+                "ssh",
+                "-o",
+                "UserKnownHostsFile=/dev/null",
+                "-o",
+                "StrictHostKeyChecking=no",
+                "torizon@${config:torizon_ip}",
+                "LOCAL_REGISTRY=${config:host_ip} TAG=arm docker-compose up -d torizon-hello-world-debug"
+            ],
+            "dependsOrder": "sequence",
+            "problemMatcher": "$msCompile",
+            "icon": {
+                "id": "flame",
+                "color": "terminal.ansiYellow"
+            }
+        },
+        {
+            "label": "deploy-torizon-arm",
+            "detail": "hide",
+            "command": "scp",
+            "type": "process",
+            "args": [
+                "-i",
+                "${workspaceFolder}/.conf/id_rsa",
+                "-o",
+                "UserKnownHostsFile=/dev/null",
+                "-o",
+                "StrictHostKeyChecking=no",
+                "-P",
+                "${config:torizon_debug_ssh_port}",
+                "-pr",
+                "${workspaceFolder}/armhf/debug",
+                "torizon@${config:torizon_ip}:~/app"
+            ],
+            "dependsOn": [
+                "validate-settings",
+                "copy-docker-compose",
+                "pre-cleanup-arm",
+                "build-makedir",
+                "build-debug-arm",
+                "build-container-torizon-debug-arm",
+                "push-container-torizon-debug-arm",
+                "pull-container-torizon-debug-arm",
+                "run-container-torizon-debug-arm",
+                "wait-a-bit",
+                "pos-cleanup"
+            ],
+            "dependsOrder": "sequence",
+            "problemMatcher": "$msCompile",
+            "icon": {
+                "id": "flame",
+                "color": "terminal.ansiYellow"
+            }
+        },
         {
             "label": "run-qmake-debug-x86",
             "command": "docker",
@@ -514,7 +864,7 @@
                 "-it",
                 "-v",
                 "${workspaceFolder}:/app",
-                "cross-toolchain-x86-cppqml",
+                "cross-toolchain-x86-torizon-hello-world",
                 "bash",
                 "-c",
                 "\"qmake6 -o amd64/Makefile CONFIG+=debug CONFIG+=qml_debug\""
@@ -541,7 +891,7 @@
                 "${workspaceFolder}/Dockerfile.sdk",
                 "${workspaceFolder}",
                 "-t",
-                "cross-toolchain-x86-cppqml",
+                "cross-toolchain-x86-torizon-hello-world",
                 "--build-arg",
                 "IMAGE_ARCH=amd64"
             ],
@@ -563,7 +913,7 @@
                 "-it",
                 "-v",
                 "${workspaceFolder}:/app",
-                "cross-toolchain-x86-cppqml",
+                "cross-toolchain-x86-torizon-hello-world",
                 "bash",
                 "-c",
                 "\"cd amd64 && make -j12\""
@@ -579,7 +929,6 @@
             "dependsOn": [
                 "run-qmake-debug-x86",
                 "copy-assets-x86"
-                
             ]
         },
         {
@@ -592,7 +941,7 @@
                 "-it",
                 "-v",
                 "${workspaceFolder}:/app",
-                "cross-toolchain-x86-cppqml",
+                "cross-toolchain-x86-helloWorld",
                 "bash",
                 "-c",
                 "\"cd amd64 && make clean\""
@@ -623,7 +972,7 @@
                 "-o",
                 "StrictHostKeyChecking=no",
                 "torizon@${config:torizon_ip}",
-                "LOCAL_REGISTRY=${config:host_ip} TAG=x86 GPU=-x86 docker-compose down --remove-orphans"
+                "LOCAL_REGISTRY=${config:host_ip} TAG=x86  docker-compose down --remove-orphans"
             ],
             "dependsOrder": "sequence",
             "problemMatcher": "$msCompile",
@@ -647,7 +996,7 @@
                 "build",
                 "--build-arg",
                 "IMAGE_ARCH=amd64",
-                "cppqml-debug"
+                "torizon-hello-world-debug"
             ],
             "dependsOrder": "sequence",
             "problemMatcher": "$msCompile",
@@ -669,7 +1018,7 @@
             },
             "args": [
                 "push",
-                "cppqml-debug"
+                "torizon-hello-world-debug"
             ],
             "dependsOrder": "sequence",
             "problemMatcher": "$msCompile",
@@ -692,7 +1041,7 @@
                 "-o",
                 "StrictHostKeyChecking=no",
                 "torizon@${config:torizon_ip}",
-                "LOCAL_REGISTRY=${config:host_ip} TAG=x86 GPU=-x86 docker-compose pull cppqml-debug"
+                "LOCAL_REGISTRY=${config:host_ip} TAG=x86  docker-compose pull torizon-hello-world-debug"
             ],
             "dependsOrder": "sequence",
             "problemMatcher": "$msCompile",
@@ -715,7 +1064,7 @@
                 "-o",
                 "StrictHostKeyChecking=no",
                 "torizon@${config:torizon_ip}",
-                "LOCAL_REGISTRY=${config:host_ip} TAG=x86 GPU=-x86 docker-compose up -d cppqml-debug"
+                "LOCAL_REGISTRY=${config:host_ip} TAG=x86  docker-compose up -d torizon-hello-world-debug"
             ],
             "dependsOrder": "sequence",
             "problemMatcher": "$msCompile",
@@ -743,6 +1092,7 @@
                 "torizon@${config:torizon_ip}:~/app"
             ],
             "dependsOn": [
+                "validate-settings",
                 "copy-docker-compose",
                 "pre-cleanup-x86",
                 "build-makedir",
@@ -761,7 +1111,6 @@
                 "color": "terminal.ansiYellow"
             }
         },
-        // EITA
         {
             "label": "create-production-image",
             "command": "pwsh",
@@ -777,11 +1126,11 @@
             "args": [
                 "${workspaceFolder}/.conf/createDockerComposeProduction.ps1",
                 "${workspaceFolder}",
-                "${input:dockerImageRegistry}",
+                "${command:docker_registry}",
                 "${input:dockerImageTag}",
-                "cppqml",
+                "torizon-hello-world",
                 "${input:archList}",
-                "${input:dockerPsswd}"
+                "${command:docker_password}"
             ],
             "dependsOrder": "sequence",
             "icon": {
@@ -795,16 +1144,16 @@
             "type": "process",
             "options": {
                 "env": {
-                    "DOCKER_LOGIN": "${input:dockerLogin}",
-                    "DOCKER_PSSWD": "${input:dockerPsswd}"
+                    "DOCKER_LOGIN": "${command:docker_login}",
+                    "DOCKER_PSSWD": "${command:docker_password}"
                 }
             },
             "args": [
                 "login",
                 "--username",
-                "${input:dockerLogin}",
+                "${command:docker_login}",
                 "--password",
-                "${input:dockerPsswd}"
+                "${command:docker_password}"
             ],
             "dependsOrder": "sequence",
             "icon": {
@@ -962,6 +1311,22 @@
                 "id": "layers",
                 "color": "terminal.ansiCyan"
             }
+        },
+        {
+            "label": "validate-settings",
+            "detail": "hide",
+            "command": "bash",
+            "type": "process",
+            "args": [
+                "-c",
+            "[[ ! -z \"${config:torizon_ip}\" ]] && true || false"
+            ],
+            "dependsOrder": "sequence",
+            "problemMatcher": "$msCompile",
+            "icon": {
+                "id": "layers",
+                "color": "terminal.ansiCyan"
+            }
         }
     ],
     "inputs": [
@@ -997,8 +1362,7 @@
             "description": "Container architecture",
             "options": [
                 "arm",
-                "arm64",
-                "amd64"
+                "arm64"
             ]
         }
     ]

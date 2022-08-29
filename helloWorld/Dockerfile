@@ -8,7 +8,7 @@ ARG SDK_BASE_VERSION=2.5-bullseye
 ##
 # Application Name
 ##
-ARG APP_EXECUTABLE=app
+ARG APP_EXECUTABLE=helloWorld
 
 ##
 # Board architecture
@@ -101,4 +101,4 @@ COPY --from=Build /app/build /app
 USER torizon
 WORKDIR /app/debug
 
-CMD [ "./cppQML" ]
+CMD [ "./helloWorld" ]

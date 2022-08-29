@@ -14,7 +14,7 @@ ARG BASE_VERSION=2
 ##
 # Application Name
 ##
-ARG APP_EXECUTABLE=app
+ARG APP_EXECUTABLE=helloWorld
 
 # BUILD ------------------------------------------------------------------------
 ##
