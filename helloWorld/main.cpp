@@ -1,8 +1,12 @@
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
+#include <QThread>
 
 int main(int argc, char *argv[])
 {
+    // wait a bit to sync with weston that is still starting
+    QThread::sleep(1);
+
     QGuiApplication app(argc, argv);
 
     QQmlApplicationEngine engine;
