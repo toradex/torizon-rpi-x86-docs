@@ -1203,7 +1203,6 @@
         },
         {
             "label": "create-production-image",
-            "detail": "hide",
             "command": "pwsh",
             "type": "process",
             "presentation": {
