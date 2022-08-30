@@ -56,7 +56,7 @@ After running the provisioning command and the update system polling service rea
 
 - With the Explorer activity opened click in the `TASK RUNNER`;
 
-- Click in the `create-production-image` command;
+- Click in the `Create Production Docker Image` command;
 
 - Input your container image registry (your Dockerhub user for example);
 

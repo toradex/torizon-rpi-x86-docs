@@ -122,6 +122,7 @@
             ],
             "dependsOrder": "sequence",
             "dependsOn": [
+                "update-qt-ini-arm64",
                 "kill-redirect-qml-debugger",
                 "deploy-torizon-arm64",
                 "redirect-qml-debugger"
@@ -173,6 +174,7 @@
             ],
             "dependsOrder": "sequence",
             "dependsOn": [
+                "update-qt-ini-arm",
                 "kill-redirect-qml-debugger",
                 "deploy-torizon-arm",
                 "redirect-qml-debugger"
@@ -201,6 +203,7 @@
             ],
             "dependsOrder": "sequence",
             "dependsOn": [
+                "update-qt-ini-x86",
                 "kill-redirect-qml-debugger",
                 "deploy-torizon-x86",
                 "redirect-qml-debugger"
@@ -1112,7 +1115,95 @@
             }
         },
         {
+            "label": "update-qt-ini-arm64",
+            "detail": "hide",
+            "command": "pwsh",
+            "type": "process",
+            "args": [
+                "-nop",
+                "-c",
+                "${env:HOME}/.apollox/scripts/updateQtCreatorIni.ps1",
+                "${workspaceFolder}",
+                "${config:torizon_ip}:${config:torizon_debug_port2}",
+                "helloWorld",
+                "aarch64"
+            ],
+            "dependsOrder": "sequence",
+            "problemMatcher": "$msCompile",
+            "icon": {
+                "id": "symbol-parameter",
+                "color": "terminal.ansiYellow"
+            }
+        },
+        {
+            "label": "update-qt-ini-arm",
+            "detail": "hide",
+            "command": "pwsh",
+            "type": "process",
+            "args": [
+                "-nop",
+                "-c",
+                "${env:HOME}/.apollox/scripts/updateQtCreatorIni.ps1",
+                "${workspaceFolder}",
+                "${config:torizon_ip}:${config:torizon_debug_port2}",
+                "helloWorld",
+                "armhf"
+            ],
+            "dependsOrder": "sequence",
+            "problemMatcher": "$msCompile",
+            "icon": {
+                "id": "symbol-parameter",
+                "color": "terminal.ansiYellow"
+            }
+        },
+        {
+            "label": "update-qt-ini-x86",
+            "detail": "hide",
+            "command": "pwsh",
+            "type": "process",
+            "args": [
+                "-nop",
+                "-c",
+                "${env:HOME}/.apollox/scripts/updateQtCreatorIni.ps1",
+                "${workspaceFolder}",
+                "${config:torizon_ip}:${config:torizon_debug_port2}",
+                "helloWorld",
+                "amd64"
+            ],
+            "dependsOrder": "sequence",
+            "problemMatcher": "$msCompile",
+            "icon": {
+                "id": "symbol-parameter",
+                "color": "terminal.ansiYellow"
+            }
+        },
+        {
+            "label": "Create Production Docker Image",
+            "command": "echo",
+            "type": "process",
+            "presentation": {
+                "echo": false,
+                "reveal": "always",
+                "focus": true,
+                "panel": "shared",
+                "showReuseMessage": true,
+                "clear": false
+            },
+            "args": [
+                "✅ Successfully Finished"
+            ],
+            "dependsOrder": "sequence",
+            "dependsOn": [
+                "create-production-image"
+            ],
+            "icon": {
+                "id": "layers",
+                "color": "terminal.ansiCyan"
+            }
+        },
+        {
             "label": "create-production-image",
+            "detail": "hide",
             "command": "pwsh",
             "type": "process",
             "presentation": {
@@ -1362,7 +1453,8 @@
             "description": "Container architecture",
             "options": [
                 "arm",
-                "arm64"
+                "arm64",
+                "amd64"
             ]
         }
     ]
