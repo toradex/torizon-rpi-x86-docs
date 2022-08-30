@@ -14,6 +14,13 @@ With the Torizon VS Code Extension v2 installed and the target device connected,
 git clone https://github.com/toradex/torizon-rpi-x86-docs
 ```
 
+> ⚠️ Be sure to update the permissions of the insecure shared keys used for debug connections:
+```bash
+cd torizon-rpi-x86-docs
+cd helloWorld
+chmod 600 .conf/id_rsa
+```
+
 Open the `helloWorld` folder on VS Code:
 
 ```bash
