@@ -54,6 +54,7 @@ docker run --rm -it --name=crops7 -v /home/<your-user>/workdir:/workdir --workdi
 
 | Target Hardware  | MACHINE            |
 | ---------------- |:------------------ |
+| Raspberry Pi 4B  | raspberrypi4-64    |
 | Raspberry Pi 3B  | raspberrypi3-64    |
 | Raspberry Pi 3B+ | raspberrypi3-64    |
 | Intel x86-64     | intel-corei7-64    |
