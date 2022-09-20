@@ -2,7 +2,7 @@
 
 Torizon is a software platform that simplifies the process of developing and maintaining embedded software. It allows you to configure the system for IoT/IIoT with over the air updates (OTA) quickly and easily, so you can focus on application development instead of Linux builds. With Torizon for Raspberry Pi and x86-64 devices, we experiment with extending the Torizon ecosystem beyond Toradex SoMs.
 
-> ⚠️ **This software is provided experimentally as-is. Users may self-onboard, self-support and/or work with an integration partner to evaluate Torizon for Raspberry Pi & x86-64 systems. Please share with us your feedback & any interest to use Torizon in your product.
+> ⚠️ **This software is provided experimentally as-is. Users may self-onboard, self-support and/or work with an integration partner to evaluate Torizon for RISC-V systems. Please share with us your feedback & any interest to use Torizon in your product.**
 
 ## Getting Started
 
